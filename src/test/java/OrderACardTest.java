@@ -31,12 +31,14 @@ public class OrderACardTest {
 
     Validator valid = new Validator();
 
-    @Test // открытие страницы
+    @Test
+        // открытие страницы
     void addSite() {
         driver.get("http://localhost:9999/");
     }
 
-    @Test //Ввод Фамилия и Имя русские буквы, дефисы и пробелы.
+    @Test
+        //Ввод Фамилия и Имя русские буквы, дефисы и пробелы.
     void orderACard() throws InterruptedException {
         driver.get("http://localhost:9999/");
         WebElement form = driver.findElement(By.className("form_size_m"));
@@ -57,28 +59,32 @@ public class OrderACardTest {
         Assertions.assertEquals(expected, actual);
     }
 
-    @Test //ввод телефона
+    @Test
+        //ввод телефона
     void telephone() {
         driver.get("http://localhost:9999/");
         WebElement form = driver.findElement(By.className("form_size_m"));
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79999999999");
     }
 
-    @Test //галочка
+    @Test
+        //галочка
     void chitBox() throws InterruptedException {
         driver.get("http://localhost:9999/");
         WebElement form = driver.findElement(By.className("form_size_m"));
         form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
     }
 
-    @Test // отправка пустой формы
+    @Test
+        // отправка пустой формы
     void next() throws InterruptedException {
         driver.get("http://localhost:9999/");
         WebElement form = driver.findElement(By.className("form_size_m"));
         form.findElement(By.cssSelector("[role=button]")).click();
     }
 
-    @Test // отправка пустой формы
+    @Test
+        // отправка пустой формы
     void nextForm() throws InterruptedException {
         driver.get("http://localhost:9999/");
         WebElement form = driver.findElement(By.className("form_size_m"));
@@ -107,7 +113,6 @@ public class OrderACardTest {
 
 
 }
-
 
 
 //        form.findElement(By.cssSelector("[role=button]")).click();
