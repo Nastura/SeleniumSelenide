@@ -20,7 +20,11 @@ public class OrderACardTest {
 
     @BeforeEach
     void setUp() {
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--headless");
+        driver = new ChromeDriver(options);
     }
 
     @AfterEach
@@ -88,11 +92,6 @@ public class OrderACardTest {
     void nextForm() throws InterruptedException {
         driver.get("http://localhost:9999/");
         WebElement form = driver.findElement(By.className("form_size_m"));
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--headless");
-        driver = new ChromeDriver(options);
         form.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Вавилова Анастасия");
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79999999999");
         form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
