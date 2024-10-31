@@ -109,10 +109,4 @@ public class OrderACardTest {
 //        Assertions.assertEquals("Vavilova Anastasiya", validName);
 ////        Assertions.assertThrows(LatinException.class, () -> valid.validator(validName));
 //    }
-
-
 }
-
-
-//        form.findElement(By.cssSelector("[role=button]")).click();
-//        String actual = form.findElement(By.className("input__sub")).getText();
