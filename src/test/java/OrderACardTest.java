@@ -14,7 +14,6 @@ public class OrderACardTest {
 
     @BeforeAll
     public static void setupAll() {
-        System.setProperty("webdriver.chrome.driver", "chromedriver-win64/chromedriver.exe");
         WebDriverManager.chromedriver().setup();
     }
 
@@ -25,6 +24,7 @@ public class OrderACardTest {
         options.addArguments("--no-sandbox");
         options.addArguments("--headless");
         driver = new ChromeDriver(options);
+        driver.get("http://localhost:9999/");
     }
 
     @AfterEach
@@ -36,77 +36,73 @@ public class OrderACardTest {
     Validator valid = new Validator();
 
     @Test
-        // открытие страницы
-    void addSite() {
-        driver.get("http://localhost:9999/");
-    }
-
-    @Test
-        //Ввод Фамилия и Имя русские буквы, дефисы и пробелы.
+        // Тест 1 Фамилия и имя
     void orderACard() throws InterruptedException {
-        driver.get("http://localhost:9999/");
         WebElement form = driver.findElement(By.className("form_size_m"));
         form.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Вавилова Анастасия");
+        String actual = form.findElement(By.className("input__control")).getAttribute("value");
+        String expected = "Вавилова Анастасия";
+        Assertions.assertEquals(expected, actual);
 
     }
 
     @Test
+        // Тест 2 Номер телефона
+    void orderACaryd() throws InterruptedException {
+        WebElement form = driver.findElement(By.className("form_size_m"));
+        form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("79998153516");
+        String actual = form.findElement(By.cssSelector("[data-test-id=phone] input")).getAttribute("value");
+        String expected = "79998153516";
+        Assertions.assertEquals(expected, actual);
+
+    }
+
+
+    @Test // Тест 3 Ошибка Имя и Фамилия указаные неверно.
     public void latinName() throws InterruptedException {
-        driver.get("http://localhost:9999/");
         WebElement form = driver.findElement(By.className("form_size_m"));
         form.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Vavilova Anastasiya");
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79999999999");
         form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         form.findElement(By.cssSelector("[role=button]")).click();
-        String actual = form.findElement(By.className("input__sub")).getText();
+        String actual = form.findElement(By.cssSelector("[data-test-id='name'].input_invalid .input__sub")).getText();
         String expected = "Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.";
         Assertions.assertEquals(expected, actual);
     }
 
-    @Test
-        //ввод телефона
-    void telephone() {
-        driver.get("http://localhost:9999/");
+    @Test //Тест 4 Ошибка Поле обязательно для заполнения"
+    public void NullName() throws InterruptedException {
         WebElement form = driver.findElement(By.className("form_size_m"));
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79999999999");
-    }
-
-    @Test
-        //галочка
-    void chitBox() throws InterruptedException {
-        driver.get("http://localhost:9999/");
-        WebElement form = driver.findElement(By.className("form_size_m"));
         form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
-    }
-
-    @Test
-        // отправка пустой формы
-    void next() throws InterruptedException {
-        driver.get("http://localhost:9999/");
-        WebElement form = driver.findElement(By.className("form_size_m"));
         form.findElement(By.cssSelector("[role=button]")).click();
+        String actual = form.findElement(By.cssSelector("[data-test-id='name'].input_invalid .input__sub")).getText();
+        String expected = "Поле обязательно для заполнения";
+        Assertions.assertEquals(expected, actual);
     }
 
-    @Test
-        // отправка пустой формы
+    @Test //Тест 5 Ошибка Невалидный номер телефона
+    public void InvalidNumber() throws InterruptedException {
+        WebElement form = driver.findElement(By.className("form_size_m"));
+        form.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Вавилова Анастасия");
+        form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79997377");
+        form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
+        form.findElement(By.cssSelector("[role=button]")).click();
+        String actual = form.findElement(By.cssSelector("[data-test-id='phone'].input_invalid .input__sub")).getText();
+        String expected = "Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.";
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test  // Тест 6 Успешная отправка формы
     void nextForm() throws InterruptedException {
-        driver.get("http://localhost:9999/");
         WebElement form = driver.findElement(By.className("form_size_m"));
         form.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Вавилова Анастасия");
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79999999999");
         form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         form.findElement(By.cssSelector("[role=button]")).click();
+        WebElement form2 = driver.findElement(By.className("App_appContainer__3jRx1"));
+        String actual = form2.findElement(By.cssSelector("[data-test-id=order-success]")).getText();
+        String expected = "  Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.";
+        Assertions.assertEquals(expected, actual);
     }
-
-//    @Test
-//    public void validate() throws LatinException {
-//        driver.get("http://localhost:9999/");
-//        WebElement form = driver.findElement(By.className("form_size_m"));
-//        form.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Vavilova Anastasiya");
-//        form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79999999999");
-//        form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
-//        String validName = form.findElement(By.className("input__control")).getText();
-//        Assertions.assertEquals("Vavilova Anastasiya", validName);
-////        Assertions.assertThrows(LatinException.class, () -> valid.validator(validName));
-//    }
 }
