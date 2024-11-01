@@ -47,7 +47,19 @@ public class OrderACardTest {
     }
 
     @Test
-        // Тест 2 Номер телефона
+        // Тест 2 Содержание кириллических букв в имени
+    void orderACddard() throws InterruptedException {
+        WebElement form = driver.findElement(By.className("form_size_m"));
+        form.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Вавиsdfsdf sdfsdя");
+        String valide = form.findElement(By.className("input__control")).getAttribute("value");
+        Boolean actual = valid.validator(valide);
+        Boolean expected = true;
+        Assertions.assertEquals(expected, actual);
+
+    }
+
+    @Test
+        // Тест 3 Номер телефона
     void orderACaryd() throws InterruptedException {
         WebElement form = driver.findElement(By.className("form_size_m"));
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("79998153516");
@@ -58,7 +70,7 @@ public class OrderACardTest {
     }
 
 
-    @Test // Тест 3 Ошибка Имя и Фамилия указаные неверно.
+    @Test // Тест 4 Ошибка Имя и Фамилия указаные неверно.
     public void latinName() throws InterruptedException {
         WebElement form = driver.findElement(By.className("form_size_m"));
         form.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Vavilova Anastasiya");
@@ -70,7 +82,7 @@ public class OrderACardTest {
         Assertions.assertEquals(expected, actual);
     }
 
-    @Test //Тест 4 Ошибка Поле обязательно для заполнения"
+    @Test //Тест 5 Ошибка Поле обязательно для заполнения"
     public void NullName() throws InterruptedException {
         WebElement form = driver.findElement(By.className("form_size_m"));
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79999999999");
@@ -81,7 +93,7 @@ public class OrderACardTest {
         Assertions.assertEquals(expected, actual);
     }
 
-    @Test //Тест 5 Ошибка Невалидный номер телефона
+    @Test //Тест 6 Ошибка Невалидный номер телефона
     public void InvalidNumber() throws InterruptedException {
         WebElement form = driver.findElement(By.className("form_size_m"));
         form.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Вавилова Анастасия");
@@ -93,7 +105,7 @@ public class OrderACardTest {
         Assertions.assertEquals(expected, actual);
     }
 
-    @Test  // Тест 6 Успешная отправка формы
+    @Test  // Тест 7 Успешная отправка формы
     void nextForm() throws InterruptedException {
         WebElement form = driver.findElement(By.className("form_size_m"));
         form.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Вавилова Анастасия");
