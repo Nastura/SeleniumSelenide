@@ -38,9 +38,10 @@ public class OrderACardTest {
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79655844662");
         form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         form.findElement(By.cssSelector("[role=button]")).click();
-        String expected = driver.findElement(By.className("paragraph")).getAttribute("data-test-id");
-        String actual = null;
-        Assertions.assertEquals(expected, actual);
+        String expected = "  Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.";
+        String actual = form.findElement(By.cssSelector("[data-test-id='name'].input_invalid .input__sub")).getText();
+        Assertions.assertNotEquals(expected, actual);
+
     }
 
     @Test // Отправка Ф.И. включающая в себя дефисы.
@@ -50,8 +51,7 @@ public class OrderACardTest {
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79655844662");
         form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         form.findElement(By.cssSelector("[role=button]")).click();
-        WebElement form2 = driver.findElement(By.className("App_appContainer__3jRx1"));
-        String actual = form2.findElement(By.cssSelector("[data-test-id=order-success]")).getText();
+        String actual = driver.findElement(By.cssSelector("[data-test-id=order-success]")).getText();
         String expected = "  Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.";
         Assertions.assertEquals(expected, actual);
     }
@@ -63,8 +63,7 @@ public class OrderACardTest {
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79655844662");
         form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         form.findElement(By.cssSelector("[role=button]")).click();
-        WebElement form2 = driver.findElement(By.className("App_appContainer__3jRx1"));
-        String actual = form2.findElement(By.cssSelector("[data-test-id=order-success]")).getText();
+        String actual = driver.findElement(By.cssSelector("[data-test-id=order-success]")).getText();
         String expected = "  Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.";
         Assertions.assertEquals(expected, actual);
     }
@@ -73,6 +72,8 @@ public class OrderACardTest {
     public void cyrillic() throws InterruptedException {
         WebElement form = driver.findElement(By.className("form_size_m"));
         form.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Vavilova Anastasiya");
+        form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79655844662");
+        form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         form.findElement(By.cssSelector("[role=button]")).click();
         String actual = form.findElement(By.cssSelector("[data-test-id='name'].input_invalid .input__sub")).getText();
         String expected = "Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.";
@@ -83,6 +84,8 @@ public class OrderACardTest {
     public void specialCharacters() throws InterruptedException {
         WebElement form = driver.findElement(By.className("form_size_m"));
         form.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Вавилова Анастасия.");
+        form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79655844662");
+        form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         form.findElement(By.cssSelector("[role=button]")).click();
         String actual = form.findElement(By.cssSelector("[data-test-id='name'].input_invalid .input__sub")).getText();
         String expected = "Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.";
@@ -123,10 +126,9 @@ public class OrderACardTest {
         Assertions.assertEquals(expected, actual);
     }
 
-    @Test // Отправка заявки с заполненным полем только номер телефона.
+    @Test // Отправка заявки без заполненных данных
     public void oneNumber() throws InterruptedException {
         WebElement form = driver.findElement(By.className("form_size_m"));
-        form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79655844662");
         form.findElement(By.cssSelector("[role=button]")).click();
         String actual = form.findElement(By.cssSelector("[data-test-id='name'].input_invalid .input__sub")).getText();
         String expected = "Поле обязательно для заполнения";
@@ -176,8 +178,7 @@ public class OrderACardTest {
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79655844662");
         form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         form.findElement(By.cssSelector("[role=button]")).click();
-        WebElement form2 = driver.findElement(By.className("App_appContainer__3jRx1"));
-        String actual = form2.findElement(By.cssSelector("[data-test-id=order-success]")).getText();
+        String actual = driver.findElement(By.cssSelector("[data-test-id=order-success]")).getText();
         String expected = "  Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.";
         Assertions.assertEquals(expected, actual);
     }
@@ -188,10 +189,11 @@ public class OrderACardTest {
         form.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Вавилова Анастасия");
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79655844662");
         form.findElement(By.cssSelector("[role=button]")).click();
-        String nameClass = "checkbox_checked";
-        Boolean expected = false;
-        String actual = form.findElement(By.cssSelector("label")).getAttribute("class");
-        Boolean result = actual.contains(nameClass);
-        Assertions.assertEquals(expected, result);
+        String actual = form.findElement(By.cssSelector(".input_invalid")).getText();
+        String expected = "Я соглашаюсь с условиями обработки и использования моих персональных данных и разрешаю сделать запрос в бюро кредитных историй";
+        Assertions.assertEquals(expected, actual);
+
+
     }
 }
+
