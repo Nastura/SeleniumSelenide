@@ -40,7 +40,7 @@ public class OrderACardTest {
         form.findElement(By.cssSelector("[role=button]")).click();
         String expected = "  Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.";
         String actual = form.findElement(By.cssSelector("[data-test-id='name'].input_invalid .input__sub")).getText();
-        Assertions.assertNotEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
 
     }
 
@@ -189,11 +189,9 @@ public class OrderACardTest {
         form.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Вавилова Анастасия");
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79655844662");
         form.findElement(By.cssSelector("[role=button]")).click();
-        String actual = form.findElement(By.cssSelector(".input_invalid")).getText();
+        String actual = form.findElement(By.cssSelector("[data-test-id=agreement].input_invalid")).getText();
         String expected = "Я соглашаюсь с условиями обработки и использования моих персональных данных и разрешаю сделать запрос в бюро кредитных историй";
         Assertions.assertEquals(expected, actual);
-
-
     }
 }
 
